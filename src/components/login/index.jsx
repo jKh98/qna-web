@@ -7,12 +7,13 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import useStyles from "./styles";
+import makeStyles from "./styles";
 import { loginUserAction } from "../../redux/actions/authActions";
 
-export default function SignIn() {
-  const classes = useStyles();
+export function LoginPage() {
+  const styles = makeStyles();
   const dispatch = useDispatch();
 
   const onHandleLogin = (event) => {
@@ -29,11 +30,11 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
+      <div className={styles.paper}>
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} onSubmit={onHandleLogin}>
+        <form className={styles.form} onSubmit={onHandleLogin}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -61,7 +62,8 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            endIcon={<CircularProgress />}
+            className={styles.submit}
           >
             Submit
           </Button>

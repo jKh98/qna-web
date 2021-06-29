@@ -8,11 +8,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
-import useStyles from "./styles";
+import makeStyles from "./styles";
 import { registerUserAction } from "../../redux/actions/authActions";
 
-export default function SignUp() {
-  const classes = useStyles();
+export function RegisterPage() {
+  const styles = makeStyles();
   const dispatch = useDispatch();
 
   const handleRegister = (event) => {
@@ -30,11 +30,11 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
+      <div className={styles.paper}>
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleRegister}>
+        <form className={styles.form} noValidate onSubmit={handleRegister}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -76,7 +76,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={styles.submit}
           >
             Submit
           </Button>
