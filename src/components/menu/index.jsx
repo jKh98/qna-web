@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ContactSupport from "@material-ui/icons/ContactSupport";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -40,12 +41,13 @@ export function Menu() {
             <MenuIcon />
           </IconButton>
           <Typography
-            component="h2"
-            variant="h5"
+            component="h4"
+            variant="h4"
             color="inherit"
             noWrap
             className={styles.title}
           >
+            <ContactSupport />
             Askr
           </Typography>
           <ButtonGroup
