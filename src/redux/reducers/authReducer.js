@@ -1,8 +1,6 @@
 import * as types from "../actions";
 
 const loginReducer = (state = {}, { type, response, error }) => {
-  console.log(type, response, error);
-
   switch (type) {
     case types.LOGIN_USER_PENDING:
       return { ...state, pending: true };
@@ -16,8 +14,6 @@ const loginReducer = (state = {}, { type, response, error }) => {
 };
 
 const registerReducer = (state = {}, { type, response, error }) => {
-  console.log(type, response, error);
-
   switch (type) {
     case types.REGISTER_USER_PENDING:
       return { ...state, pending: true };

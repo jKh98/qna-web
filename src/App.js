@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { LoginPage } from "./components/login";
 import { RegisterPage } from "./components/register";
+import { CategoriesPage } from "./components/categories";
 import { Menu } from "./components/menu";
 
 export function App() {
@@ -34,9 +35,12 @@ export function App() {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Switch>
-              <Route path="/" exact={true} component={LoginPage} />
-              <Route path="/login" component={LoginPage} />
-              <Route path="/register" component={RegisterPage} />
+              <Route exact path="/" component={LoginPage} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/questions" component={RegisterPage} />
+              <Route exact path="/categories" component={CategoriesPage} />
+              <Route exact path="/users" component={RegisterPage} />
             </Switch>
           </Container>
         </main>

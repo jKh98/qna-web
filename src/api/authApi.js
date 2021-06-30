@@ -1,6 +1,6 @@
 import { handleFetchErrors } from "../utils/api";
 
-const BASE_URL = "http://localhost:8080/api/v1";
+const { REACT_APP_BASE_URL } = process.env;
 
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
@@ -13,7 +13,7 @@ export const registerUserService = async (request) => {
     redirect: "follow",
   };
 
-  return fetch(BASE_URL.concat("/auth/signup"), requestOptions)
+  return fetch(REACT_APP_BASE_URL.concat("/auth/signup"), requestOptions)
     .then((response) => handleFetchErrors(response))
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
@@ -27,7 +27,7 @@ export const loginUserService = async (request) => {
     redirect: "follow",
   };
 
-  return fetch(BASE_URL.concat("/auth/login"), requestOptions)
+  return fetch(REACT_APP_BASE_URL.concat("/auth/login"), requestOptions)
     .then((response) => handleFetchErrors(response))
     .then((response) => ({ response }))
     .catch((error) => ({ error }));

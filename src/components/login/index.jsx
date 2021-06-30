@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -14,6 +14,7 @@ import { loginUserAction } from "../../redux/actions/authActions";
 
 export function LoginPage() {
   const styles = makeStyles();
+  const { pending } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
   const onHandleLogin = (event) => {
@@ -62,10 +63,11 @@ export function LoginPage() {
             fullWidth
             variant="contained"
             color="primary"
-            endIcon={<CircularProgress />}
+            disabled={pending}
             className={styles.submit}
           >
-            Submit
+            {pending && <CircularProgress size={14} />}
+            {!pending && "Submit"}
           </Button>
           <Grid container justify="center">
             <Grid item>

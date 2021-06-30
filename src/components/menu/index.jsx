@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -17,6 +18,7 @@ import useStyles from "./styles";
 
 export function Menu() {
   const styles = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(true);
 
   return (
@@ -45,10 +47,16 @@ export function Menu() {
           >
             Askr
           </Typography>
-          <Button color="inherit" variant="outlined">
+          <Button
+            color="inherit"
+            variant="outlined"
+            onClick={() => history.push("/register")}
+          >
             Register
           </Button>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => history.push("/login")}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
