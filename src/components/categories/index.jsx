@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -13,9 +13,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import Container from "@material-ui/core/Container";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
 
 import { getCategoriesAction } from "../../redux/actions/categoriesActions";
-import { FormControl, InputLabel } from "@material-ui/core";
 
 // pageable:
 // offset: 0
@@ -33,24 +33,29 @@ export function CategoriesPage() {
   const history = useHistory();
   const { search } = useLocation();
 
+  const handleSetQuery = useCallback(
+    (query) => {
+      history.push(`/categories?${query}`);
+    },
+    [history]
+  );
+
   useEffect(() => {
-    if (!search) {
-      history.push(`/categories?page=0&size=3`);
-    }
+    if (!search) handleSetQuery("page=0&size=3");
 
     dispatch(getCategoriesAction(search));
-  }, [dispatch, search, history]);
+  }, [dispatch, search, handleSetQuery]);
 
   const onSelectPageNumber = (_e, number) => {
     const params = new URLSearchParams(search);
     params.set("page", number - 1);
-    history.push(`/categories?${params.toString()}`);
+    handleSetQuery(params.toString());
   };
 
   const onSelectPageSize = (e) => {
     const params = new URLSearchParams(search);
     params.set("size", e.target.value);
-    history.push(`/categories?${params.toString()}`);
+    handleSetQuery(params.toString());
   };
 
   const renderCategories = () => {
