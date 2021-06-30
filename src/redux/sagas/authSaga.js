@@ -16,7 +16,6 @@ export function* registerSaga(payload) {
 }
 
 export function* loginSaga(payload) {
-  console.log(payload);
   yield put({ type: types.LOGIN_USER_PENDING });
 
   const { response, error } = yield call(loginUserService, payload);

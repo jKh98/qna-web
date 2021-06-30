@@ -40,8 +40,8 @@ export function Menu() {
             <MenuIcon />
           </IconButton>
           <Typography
-            component="h1"
-            variant="h4"
+            component="h2"
+            variant="h5"
             color="inherit"
             noWrap
             className={styles.title}

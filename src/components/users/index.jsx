@@ -15,8 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 
-import { getCategoriesAction } from "../../redux/actions/categoriesActions";
-import { CardMedia } from "@material-ui/core";
+import { getUsersAction } from "../../redux/actions/usersActions";
 
 // pageable:
 // offset: 0
@@ -26,9 +25,9 @@ import { CardMedia } from "@material-ui/core";
 // sort: {unsorted: false, sorted: true, empty: false}
 // unpaged: false
 
-export function CategoriesPage() {
+export function UsersPage() {
   const { content, pageable, totalPages, pending } = useSelector(
-    (state) => state.categories
+    (state) => state.users
   );
   const dispatch = useDispatch();
   const history = useHistory();
@@ -36,7 +35,7 @@ export function CategoriesPage() {
 
   const handleSetQuery = useCallback(
     (query) => {
-      history.push(`/categories?${query}`);
+      history.push(`/users?${query}`);
     },
     [history]
   );
@@ -44,7 +43,7 @@ export function CategoriesPage() {
   useEffect(() => {
     if (!search) handleSetQuery("page=0&size=5");
 
-    dispatch(getCategoriesAction(search));
+    dispatch(getUsersAction(search));
   }, [dispatch, search, handleSetQuery]);
 
   const onSelectPageNumber = (_e, number) => {
@@ -65,30 +64,31 @@ export function CategoriesPage() {
         .fill()
         .map((_, i) => (
           <Grid key={i} item xs={6} sm={4}>
+            <Skeleton variant="circle" width={60} height={60} />
             <Skeleton width="60%" height="40%" />
             <Skeleton />
-            <Skeleton />
             <Skeleton width="40%" />
+            <br />
+            <br />
             <br />
           </Grid>
         ));
 
-    return content?.map(({ id, name, description, image }) => (
-      <Grid key={id} item xs={6} sm={4}>
+    return content?.map(({ id, username, email }) => (
+      <Grid key={id} item xs={6} sm={3}>
         <Card variant="outlined">
-          <CardMedia image={image} title={name} style={{ height: 160 }} />
+          <img
+            src={`https://robohash.org/${username}`}
+            alt="profile pic"
+            width={80}
+            height={80}
+          />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {description}
-            </Typography>
+            <Typography variant="h5">{username}</Typography>
+            <Typography>{email}</Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
-              Explore
-            </Button>
+            <Button size="small">Explore</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -99,7 +99,7 @@ export function CategoriesPage() {
     <Container maxWidth="md">
       <Grid container direction="column">
         <Box my={2} display="flex">
-          <Typography variant="h4">Categories</Typography>
+          <Typography variant="h4">Users</Typography>
         </Box>
         <Grid container spacing={1}>
           {renderCategories()}
@@ -110,7 +110,7 @@ export function CategoriesPage() {
           <FormControl variant="filled" size="small">
             <Select
               variant="outlined"
-              value={pageable?.pageSize ?? 5}
+              value={pageable?.pageSize}
               onChange={onSelectPageSize}
             >
               <MenuItem value={5}>5</MenuItem>

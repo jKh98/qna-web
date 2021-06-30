@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { LoginPage } from "./components/login";
 import { RegisterPage } from "./components/register";
 import { CategoriesPage } from "./components/categories";
+import { UsersPage } from "./components/users";
 import { Menu } from "./components/menu";
 
 export function App() {
@@ -40,7 +41,7 @@ export function App() {
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path="/questions" component={RegisterPage} />
               <Route exact path="/categories" component={CategoriesPage} />
-              <Route exact path="/users" component={RegisterPage} />
+              <Route exact path="/users" component={UsersPage} />
             </Switch>
           </Container>
         </main>
