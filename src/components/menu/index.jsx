@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 import { MenuItems } from "./items";
 import useStyles from "./styles";
@@ -40,23 +41,25 @@ export function Menu() {
           </IconButton>
           <Typography
             component="h1"
-            variant="h6"
+            variant="h4"
             color="inherit"
             noWrap
             className={styles.title}
           >
             Askr
           </Typography>
-          <Button
-            color="inherit"
-            variant="outlined"
-            onClick={() => history.push("/register")}
+          <ButtonGroup
+            variant="text"
+            color="primary"
+            aria-label="text primary button group"
           >
-            Register
-          </Button>
-          <Button color="inherit" onClick={() => history.push("/login")}>
-            Login
-          </Button>
+            <Button color="inherit" onClick={() => history.push("/login")}>
+              Login
+            </Button>
+            <Button color="secondary" onClick={() => history.push("/register")}>
+              Register
+            </Button>
+          </ButtonGroup>
         </Toolbar>
       </AppBar>
       <Drawer

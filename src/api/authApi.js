@@ -14,7 +14,7 @@ export const registerUserService = async (request) => {
   };
 
   return fetch(REACT_APP_BASE_URL.concat("/auth/signup"), requestOptions)
-    .then((response) => handleFetchErrors(response))
+    .then(async (response) => await handleFetchErrors(response))
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 };
@@ -28,7 +28,7 @@ export const loginUserService = async (request) => {
   };
 
   return fetch(REACT_APP_BASE_URL.concat("/auth/login"), requestOptions)
-    .then((response) => handleFetchErrors(response))
+    .then(async (response) => await handleFetchErrors(response))
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 };

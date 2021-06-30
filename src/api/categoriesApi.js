@@ -5,15 +5,18 @@ const { REACT_APP_BASE_URL } = process.env;
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
-export const getCategoriesService = async (request) => {
+export const getCategoriesService = async (query) => {
   let requestOptions = {
     method: "GET",
     headers,
     redirect: "follow",
   };
 
-  return fetch(REACT_APP_BASE_URL.concat("/categories"), requestOptions)
-    .then((response) => handleFetchErrors(response))
+  let url = new URL(REACT_APP_BASE_URL.concat("/categories"));
+  url.search = query;
+
+  return fetch(url, requestOptions)
+    .then(async (response) => await handleFetchErrors(response))
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 };

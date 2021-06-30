@@ -1,18 +1,21 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 import makeStyles from "./styles";
 import { registerUserAction } from "../../redux/actions/authActions";
 
 export function RegisterPage() {
   const styles = makeStyles();
+  const { pending, error } = useSelector((state) => state.register);
   const dispatch = useDispatch();
 
   const handleRegister = (event) => {
@@ -28,8 +31,7 @@ export function RegisterPage() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container maxWidth="xs">
       <div className={styles.paper}>
         <Typography component="h1" variant="h5">
           Register
@@ -76,9 +78,10 @@ export function RegisterPage() {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={pending}
             className={styles.submit}
           >
-            Submit
+            {pending ? <CircularProgress size={14} /> : "Submit"}
           </Button>
           <Grid container justify="center">
             <Grid item>
@@ -89,6 +92,14 @@ export function RegisterPage() {
           </Grid>
         </form>
       </div>
+      <Snackbar
+        open={!!error}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert variant="filled" severity="error">
+          {error}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
