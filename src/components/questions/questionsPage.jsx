@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
-import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 import {
   getQuestionsAction,
@@ -15,6 +15,8 @@ import {
 import { PageFilters } from "../filters";
 import { QuestionSkeleton } from "./questionSkeleton";
 import { QuestionItem } from "./questionItem";
+import { getCategoryByIdAction } from "../../redux/actions/categoriesActions";
+import { CategoryItem } from "../categories/categoryItem";
 
 // pageable:
 // offset: 0
@@ -24,22 +26,14 @@ import { QuestionItem } from "./questionItem";
 // sort: {unsorted: false, sorted: true, empty: false}
 // unpaged: false
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 export function QuestionsPage() {
-  const { content, pageable, totalPages, pending } = useSelector(
-    (state) => state.questions
-  );
+  const { content, pageable, totalPages, selectedCategory, pending } =
+    useSelector((state) => state.questions);
+
   const dispatch = useDispatch();
   const params = useParams();
   const history = useHistory();
-  const { search } = useLocation();
-  const styles = useStyles();
+  const { search, pathname } = useLocation();
 
   const handleSetQuery = useCallback(
     (query) => {
@@ -54,6 +48,7 @@ export function QuestionsPage() {
 
   useEffect(() => {
     if (params.categoryId) {
+      dispatch(getCategoryByIdAction(params.categoryId));
       dispatch(getQuestionsByCategoryAction(params.categoryId, search));
     } else {
       dispatch(getQuestionsAction(search));
@@ -67,17 +62,39 @@ export function QuestionsPage() {
         .map((_, i) => <QuestionSkeleton key={i} />);
 
     return content?.map((question, i) => (
-      <QuestionItem key={i} {...question} />
+      <QuestionItem
+        key={i}
+        {...question}
+        shouldReferenceCategory={!pathname.includes("categories")}
+      />
     ));
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Grid container direction="column">
         <Box my={2} display="flex">
-          <Typography variant="h4">Questions</Typography>
+          <Typography variant="h4">
+            {!!selectedCategory
+              ? `Questions in ${selectedCategory?.name}`
+              : "Feed"}
+          </Typography>
         </Box>
-        <List className={styles.root}>{renderQuestions()}</List>
+        <Grid container direction="row" justify="space-between">
+          <Grid item xs={12} sm={selectedCategory ? 7 : 12}>
+            <List>{renderQuestions()}</List>
+          </Grid>
+          {!!selectedCategory && (
+            <CategoryItem
+              {...selectedCategory}
+              actionsSection={
+                <Button variant="contained" color="primary">
+                  Ask!
+                </Button>
+              }
+            />
+          )}
+        </Grid>
         <br />
         <PageFilters
           size={pageable?.pageSize || 5}

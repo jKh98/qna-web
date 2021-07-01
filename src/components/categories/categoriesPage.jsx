@@ -10,6 +10,7 @@ import { getCategoriesAction } from "../../redux/actions/categoriesActions";
 import { PageFilters } from "../filters";
 import { CategoryItem } from "./categoryItem";
 import { CategorySkeleton } from "./categorySkeleton";
+import { Button } from "@material-ui/core";
 
 export function CategoriesPage() {
   const { content, pageable, totalPages, pending } = useSelector(
@@ -33,7 +34,15 @@ export function CategoriesPage() {
       <CategoryItem
         key={i}
         {...category}
-        onSelect={() => history.push(`/categories/${category.id}/questions`)}
+        actionsSection={
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => history.push(`/categories/${category.id}/questions`)}
+          >
+            Explore
+          </Button>
+        }
       />
     ));
   };

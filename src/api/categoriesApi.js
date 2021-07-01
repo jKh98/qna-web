@@ -20,3 +20,19 @@ export const getCategoriesService = async (query) => {
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 };
+
+export const getCategorybyIdService = async (id) => {
+  console.log(id);
+  let requestOptions = {
+    method: "GET",
+    headers,
+    redirect: "follow",
+  };
+
+  let url = new URL(REACT_APP_BASE_URL.concat(`/categories/${id}`));
+
+  return fetch(url, requestOptions)
+    .then(async (response) => await handleFetchErrors(response))
+    .then((response) => ({ response }))
+    .catch((error) => ({ error }));
+};
