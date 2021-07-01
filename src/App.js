@@ -1,33 +1,36 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { UsersPage } from "./components/users";
 import { LoginPage } from "./components/login";
 import { RegisterPage } from "./components/register";
 import { CategoriesPage } from "./components/categories";
 import { QuestionsPage } from "./components/questions";
-import { UsersPage } from "./components/users";
+import { ProtectedRoute } from "./components/route";
 import { Menu } from "./components/menu";
 
-export function App() {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-      height: "100vh",
-      overflow: "auto",
-    },
-    container: {
-      paddingTop: theme.spacing(4),
-      paddingBottom: theme.spacing(4),
-    },
-  }));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto",
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+}));
 
+export function App() {
   const classes = useStyles();
+  const { token } = useSelector((state) => state.login);
 
   return (
     <div className={classes.root}>
@@ -37,12 +40,23 @@ export function App() {
           <div className={classes.appBarSpacer} />
           <Container className={classes.container}>
             <Switch>
-              <Route exact path="/" component={LoginPage} />
-              <Route exact path="/login" component={LoginPage} />
-              <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/" component={QuestionsPage} />
+              <ProtectedRoute
+                exact
+                path="/login"
+                component={LoginPage}
+                condition={!token}
+                fallback={"/"}
+              />
+              <ProtectedRoute
+                exact
+                path="/register"
+                component={RegisterPage}
+                condition={!token}
+                fallback={"/"}
+              />
               <Route exact path="/questions" component={QuestionsPage} />
               <Route
-                exact
                 path="/categories/:categoryId/questions"
                 component={QuestionsPage}
               />
