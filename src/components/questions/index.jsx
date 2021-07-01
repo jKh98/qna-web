@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -14,8 +10,16 @@ import Container from "@material-ui/core/Container";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { getUsersAction } from "../../redux/actions/usersActions";
+import {
+  getQuestionsAction,
+  getQuestionsByCategoryAction,
+} from "../../redux/actions/questionsActions";
 
 // pageable:
 // offset: 0
@@ -25,40 +29,59 @@ import { getUsersAction } from "../../redux/actions/usersActions";
 // sort: {unsorted: false, sorted: true, empty: false}
 // unpaged: false
 
-export function UsersPage() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+export function QuestionsPage() {
   const { content, pageable, totalPages, pending } = useSelector(
-    (state) => state.users
+    (state) => state.questions
   );
   const dispatch = useDispatch();
+  const params = useParams();
   const history = useHistory();
   const { search } = useLocation();
+  const styles = useStyles();
 
   const handleSetQuery = useCallback(
     (query) => {
-      history.push(`/users?${query}`);
+      if (params?.categoryId) {
+        history.push(`/categories/${params.categoryId}/questions?${query}`);
+      } else {
+        history.push(`/questions?${query}`);
+      }
     },
-    [history]
+    [history, params]
   );
 
   useEffect(() => {
     if (!search) handleSetQuery("page=0&size=5");
 
-    dispatch(getUsersAction(search));
-  }, [dispatch, search, handleSetQuery]);
+    if (params.categoryId) {
+      dispatch(getQuestionsByCategoryAction(params.categoryId, search));
+    } else {
+      dispatch(getQuestionsAction(search));
+    }
+  }, [dispatch, search, handleSetQuery, params.categoryId]);
 
   const onSelectPageNumber = (_e, number) => {
-    const params = new URLSearchParams(search);
-    params.set("page", number - 1);
-    handleSetQuery(params.toString());
+    const searchParams = new URLSearchParams(search);
+    searchParams.set("page", number - 1);
+    handleSetQuery(searchParams.toString());
   };
 
   const onSelectPageSize = (e) => {
-    const params = new URLSearchParams(search);
-    params.set("size", e.target.value);
-    handleSetQuery(params.toString());
+    const searchParams = new URLSearchParams(search);
+    searchParams.set("size", e.target.value);
+    searchParams.set("page", 0);
+    handleSetQuery(searchParams.toString());
   };
 
-  const renderUsers = () => {
+  const renderQuestions = () => {
     if (pending)
       return Array(6)
         .fill()
@@ -74,24 +97,26 @@ export function UsersPage() {
           </Grid>
         ));
 
-    return content?.map(({ id, username, email }) => (
-      <Grid key={id} item xs={6} sm={3}>
-        <Card variant="outlined">
-          <img
-            src={`https://robohash.org/${username}`}
-            alt="profile pic"
-            width={80}
-            height={80}
+    return content?.map(({ id, title, body }) => (
+      <>
+        <ListItem key={id} alignItems="flex-start">
+          <ListItemText
+            primary={title}
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  color="textPrimary"
+                >
+                  {body}
+                </Typography>
+              </React.Fragment>
+            }
           />
-          <CardContent>
-            <Typography variant="h5">{username}</Typography>
-            <Typography>{email}</Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Explore</Button>
-          </CardActions>
-        </Card>
-      </Grid>
+        </ListItem>
+        <Divider variant="inset" component="li" />
+      </>
     ));
   };
 
@@ -99,11 +124,9 @@ export function UsersPage() {
     <Container maxWidth="md">
       <Grid container direction="column">
         <Box my={2} display="flex">
-          <Typography variant="h4">Users</Typography>
+          <Typography variant="h4">Questions</Typography>
         </Box>
-        <Grid container spacing={1}>
-          {renderUsers()}
-        </Grid>
+        <List className={styles.root}>{renderQuestions()}</List>
         <br />
         <br />
         <Grid container alignItems="baseline">

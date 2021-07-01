@@ -86,7 +86,11 @@ export function CategoriesPage() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => history.push(`/categories/${id}/questions`)}
+            >
               Explore
             </Button>
           </CardActions>
