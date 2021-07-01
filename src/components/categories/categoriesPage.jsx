@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -9,14 +9,11 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
-import Pagination from "@material-ui/lab/Pagination";
 import Container from "@material-ui/core/Container";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
+import CardMedia from "@material-ui/core/CardMedia";
 
 import { getCategoriesAction } from "../../redux/actions/categoriesActions";
-import { CardMedia } from "@material-ui/core";
+import { PageFilters } from "../filters";
 
 // pageable:
 // offset: 0
@@ -34,30 +31,9 @@ export function CategoriesPage() {
   const history = useHistory();
   const { search } = useLocation();
 
-  const handleSetQuery = useCallback(
-    (query) => {
-      history.push(`/categories?${query}`);
-    },
-    [history]
-  );
-
   useEffect(() => {
-    if (!search) handleSetQuery("page=0&size=5");
-
     dispatch(getCategoriesAction(search));
-  }, [dispatch, search, handleSetQuery]);
-
-  const onSelectPageNumber = (_e, number) => {
-    const params = new URLSearchParams(search);
-    params.set("page", number - 1);
-    handleSetQuery(params.toString());
-  };
-
-  const onSelectPageSize = (e) => {
-    const params = new URLSearchParams(search);
-    params.set("size", e.target.value);
-    handleSetQuery(params.toString());
-  };
+  }, [dispatch, search]);
 
   const renderCategories = () => {
     if (pending)
@@ -110,26 +86,11 @@ export function CategoriesPage() {
         </Grid>
         <br />
         <br />
-        <Grid container alignItems="baseline">
-          <FormControl variant="filled" size="small">
-            <Select
-              variant="outlined"
-              value={pageable?.pageSize ?? 5}
-              onChange={onSelectPageSize}
-            >
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
-            </Select>
-          </FormControl>
-          <Pagination
-            color="secondary"
-            count={totalPages}
-            page={pageable?.pageNumber + 1}
-            onChange={onSelectPageNumber}
-          />
-        </Grid>
+        <PageFilters
+          size={pageable?.pageSize || 5}
+          number={pageable?.pageNumber + 1}
+          total={totalPages}
+        />
       </Grid>
     </Container>
   );
