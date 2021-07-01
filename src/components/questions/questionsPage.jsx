@@ -4,12 +4,8 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import Skeleton from "@material-ui/lab/Skeleton";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
@@ -17,6 +13,8 @@ import {
   getQuestionsByCategoryAction,
 } from "../../redux/actions/questionsActions";
 import { PageFilters } from "../filters";
+import { QuestionSkeleton } from "./questionSkeleton";
+import { QuestionItem } from "./questionItem";
 
 // pageable:
 // offset: 0
@@ -29,7 +27,6 @@ import { PageFilters } from "../filters";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -67,38 +64,10 @@ export function QuestionsPage() {
     if (pending)
       return Array(6)
         .fill()
-        .map((_, i) => (
-          <Grid key={i} item xs={6} sm={4}>
-            <Skeleton variant="circle" width={60} height={60} />
-            <Skeleton width="60%" height="40%" />
-            <Skeleton />
-            <Skeleton width="40%" />
-            <br />
-            <br />
-            <br />
-          </Grid>
-        ));
+        .map((_, i) => <QuestionSkeleton key={i} />);
 
-    return content?.map(({ id, title, body }) => (
-      <>
-        <ListItem key={id} alignItems="flex-start">
-          <ListItemText
-            primary={title}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  color="textPrimary"
-                >
-                  {body}
-                </Typography>
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-        <Divider variant="inset" component="li" />
-      </>
+    return content?.map((question, i) => (
+      <QuestionItem key={i} {...question} />
     ));
   };
 
@@ -109,7 +78,6 @@ export function QuestionsPage() {
           <Typography variant="h4">Questions</Typography>
         </Box>
         <List className={styles.root}>{renderQuestions()}</List>
-        <br />
         <br />
         <PageFilters
           size={pageable?.pageSize || 5}

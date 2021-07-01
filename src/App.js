@@ -35,7 +35,7 @@ export function App() {
         <Menu />
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
+          <Container className={classes.container}>
             <Switch>
               <Route exact path="/" component={LoginPage} />
               <Route exact path="/login" component={LoginPage} />

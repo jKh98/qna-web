@@ -4,8 +4,10 @@ const loginReducer = (state = {}, { type, response, error }) => {
   switch (type) {
     case types.LOGIN_USER_PENDING:
       return { ...state, pending: true };
+
     case types.LOGIN_USER_SUCCESS:
       return { ...state, ...response, error: "", pending: false };
+
     case types.LOGIN_USER_ERROR:
       return { error: error.message, pending: false };
     default:
@@ -18,7 +20,7 @@ const registerReducer = (state = {}, { type, response, error }) => {
     case types.REGISTER_USER_PENDING:
       return { ...state, pending: true };
     case types.REGISTER_USER_SUCCESS:
-      return { ...state, ...response, error: "", pending: false };
+      return { ...state, error: "", pending: false };
     case types.REGISTER_USER_ERROR:
       return { error: error.message, pending: false };
     default:
