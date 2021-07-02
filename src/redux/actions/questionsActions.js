@@ -10,3 +10,9 @@ export const getQuestionsByCategoryAction = (categoryId, query = "") => ({
   categoryId,
   query,
 });
+
+export const addQuestionAction = (categoryId, question) => ({
+  type: types.ADD_QUESTION,
+  categoryId,
+  question,
+});

@@ -21,7 +21,6 @@ export function* getCategoryByIdSaga({ id }) {
   yield put({ type: types.CATEGORIES_PENDING });
 
   const { response, error } = yield call(getCategorybyIdService, id);
-  console.log(response);
   if (response) {
     yield put({ type: types.GET_CATEGORY_BY_ID_SUCCESS, response });
   } else {

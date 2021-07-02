@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -7,8 +7,11 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 import {
+  addQuestionAction,
   getQuestionsAction,
   getQuestionsByCategoryAction,
 } from "../../redux/actions/questionsActions";
@@ -17,6 +20,8 @@ import { QuestionSkeleton } from "./questionSkeleton";
 import { QuestionItem } from "./questionItem";
 import { getCategoryByIdAction } from "../../redux/actions/categoriesActions";
 import { CategoryItem } from "../categories/categoryItem";
+
+import { QuestionModal } from "./questionModal";
 
 // pageable:
 // offset: 0
@@ -27,13 +32,21 @@ import { CategoryItem } from "../categories/categoryItem";
 // unpaged: false
 
 export function QuestionsPage() {
-  const { content, pageable, totalPages, selectedCategory, pending } =
-    useSelector((state) => state.questions);
+  const {
+    content,
+    pageable,
+    totalPages,
+    selectedCategory,
+    pending,
+    error,
+    success,
+  } = useSelector((state) => state.questions);
 
   const dispatch = useDispatch();
   const params = useParams();
   const history = useHistory();
   const { search, pathname } = useLocation();
+  const [isVisible, setVisible] = useState(false);
 
   const handleSetQuery = useCallback(
     (query) => {
@@ -55,6 +68,18 @@ export function QuestionsPage() {
     }
   }, [dispatch, search, handleSetQuery, params.categoryId]);
 
+  const handleAddQuestion = (event) => {
+    event.preventDefault();
+
+    const data = {
+      title: event.target.title.value,
+      body: event.target.body.value,
+    };
+
+    dispatch(addQuestionAction(selectedCategory?.id, data));
+    setVisible(false);
+  };
+
   const renderQuestions = () => {
     if (pending)
       return Array(6)
@@ -68,6 +93,37 @@ export function QuestionsPage() {
         shouldReferenceCategory={!pathname.includes("categories")}
       />
     ));
+  };
+
+  const renderCategoryComponent = () =>
+    !!selectedCategory && (
+      <CategoryItem
+        {...selectedCategory}
+        actionsSection={
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => setVisible(true)}
+          >
+            Ask!
+          </Button>
+        }
+      />
+    );
+
+  const renderAlert = () => {
+    if (!!error)
+      return (
+        <Alert variant="filled" severity="error">
+          {error}
+        </Alert>
+      );
+    else if (!!success)
+      return (
+        <Alert variant="filled" severity="success">
+          {success}
+        </Alert>
+      );
   };
 
   return (
@@ -84,16 +140,7 @@ export function QuestionsPage() {
           <Grid item xs={12} sm={selectedCategory ? 7 : 12}>
             <List>{renderQuestions()}</List>
           </Grid>
-          {!!selectedCategory && (
-            <CategoryItem
-              {...selectedCategory}
-              actionsSection={
-                <Button variant="contained" color="primary">
-                  Ask!
-                </Button>
-              }
-            />
-          )}
+          {renderCategoryComponent()}
         </Grid>
         <br />
         <PageFilters
@@ -102,6 +149,21 @@ export function QuestionsPage() {
           total={totalPages}
         />
       </Grid>
+
+      {isVisible && (
+        <QuestionModal
+          isVisible={isVisible}
+          setVisible={setVisible}
+          handleAddQuestion={handleAddQuestion}
+        />
+      )}
+
+      <Snackbar
+        open={!!error}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        {renderAlert()}
+      </Snackbar>
     </Container>
   );
 }

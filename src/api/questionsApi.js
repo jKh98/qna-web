@@ -13,7 +13,7 @@ export const getQuestionsService = async (query) => {
   };
 
   let url = new URL(REACT_APP_BASE_URL.concat("/questions"));
-  url.search = query;
+  url.search = query + "&sort=createdAt,desc";
 
   return fetch(url, requestOptions)
     .then(async (response) => await handleFetchErrors(response))
@@ -31,7 +31,27 @@ export const getQuestionsByCategoryService = async (categoryId, query) => {
   let url = new URL(
     REACT_APP_BASE_URL.concat(`/categories/${categoryId}/questions`)
   );
-  url.search = query;
+  url.search = query + "&sort=createdAt,desc";
+
+  return fetch(url, requestOptions)
+    .then(async (response) => await handleFetchErrors(response))
+    .then((response) => ({ response }))
+    .catch((error) => ({ error }));
+};
+
+export const addQuestionService = async (categoryId, token, question) => {
+  headers.append("Authorization", `Bearer ${token}`);
+
+  let requestOptions = {
+    method: "POST",
+    headers,
+    redirect: "follow",
+    body: JSON.stringify(question),
+  };
+
+  let url = new URL(
+    REACT_APP_BASE_URL.concat(`/categories/${categoryId}/questions`)
+  );
 
   return fetch(url, requestOptions)
     .then(async (response) => await handleFetchErrors(response))

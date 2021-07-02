@@ -4,7 +4,11 @@ import * as types from "../actions";
 import { getUsersSaga } from "./usersSaga";
 import { registerSaga, loginSaga } from "./authSaga";
 import { getCategoryByIdSaga, getCategoriesSaga } from "./categoriesSaga";
-import { getQuestionsByCategorySaga, getQuestionsSaga } from "./questionsSaga";
+import {
+  addQuestionSaga,
+  getQuestionsByCategorySaga,
+  getQuestionsSaga,
+} from "./questionsSaga";
 
 export function* watchUserAuthentication() {
   yield takeLatest(types.REGISTER_USER, registerSaga);
@@ -23,4 +27,5 @@ export function* watchUsers() {
 export function* watchQuestions() {
   yield takeLatest(types.GET_QUESTIONS, getQuestionsSaga);
   yield takeLatest(types.GET_QUESTIONS_BY_CATEGORY, getQuestionsByCategorySaga);
+  yield takeLatest(types.ADD_QUESTION, addQuestionSaga);
 }

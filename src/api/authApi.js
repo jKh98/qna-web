@@ -5,11 +5,11 @@ const { REACT_APP_BASE_URL } = process.env;
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
-export const registerUserService = async (request) => {
+export const registerUserService = async (user) => {
   let requestOptions = {
     method: "POST",
     headers,
-    body: JSON.stringify(request.user),
+    body: JSON.stringify(user),
     redirect: "follow",
   };
 
@@ -19,11 +19,11 @@ export const registerUserService = async (request) => {
     .catch((error) => ({ error }));
 };
 
-export const loginUserService = async (request) => {
+export const loginUserService = async (credentials) => {
   let requestOptions = {
     method: "POST",
     headers,
-    body: JSON.stringify(request.user),
+    body: JSON.stringify(credentials),
     redirect: "follow",
   };
 

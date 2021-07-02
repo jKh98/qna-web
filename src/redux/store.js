@@ -18,4 +18,6 @@ const store = () => {
   return storeConfig;
 };
 
+export const token = (state) => state.login.token;
+
 export { store };

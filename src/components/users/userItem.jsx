@@ -1,6 +1,5 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import CardHeader from "@material-ui/core/CardHeader";
 import Chip from "@material-ui/core/Chip";
+import { UserProfile } from "./userProfile";
 
 const renderRole = (name) => {
   switch (name) {
@@ -26,16 +26,7 @@ export function UserItem({ id, username, email, roles }) {
     <Grid key={id} item xs={6} sm={4}>
       <Card variant="outlined">
         <CardHeader
-          avatar={
-            <Avatar aria-label="user">
-              <img
-                src={`https://robohash.org/${username}`}
-                alt="profile pic"
-                width={60}
-                height={60}
-              />
-            </Avatar>
-          }
+          avatar={<UserProfile username={username} />}
           title={<Typography variant="h5">{username}</Typography>}
           subheader={<Typography>{email}</Typography>}
         />

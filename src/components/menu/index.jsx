@@ -16,10 +16,10 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import MuiMenu from "@material-ui/core/Menu";
-import Avatar from "@material-ui/core/Avatar";
 
 import { MenuItems } from "./items";
 import useStyles from "./styles";
+import { UserProfile } from "../users/userProfile";
 
 export function Menu() {
   const { token, username } = useSelector((state) => state.login);
@@ -75,14 +75,7 @@ export function Menu() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <Avatar aria-label="user">
-                  <img
-                    src={`https://robohash.org/${username}`}
-                    alt="profile pic"
-                    width={60}
-                    height={60}
-                  />
-                </Avatar>
+                <UserProfile username={username} />
               </IconButton>
               <MuiMenu
                 id="menu-appbar"

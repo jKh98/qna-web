@@ -22,7 +22,6 @@ export const getCategoriesService = async (query) => {
 };
 
 export const getCategorybyIdService = async (id) => {
-  console.log(id);
   let requestOptions = {
     method: "GET",
     headers,

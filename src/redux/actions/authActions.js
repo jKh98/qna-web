@@ -7,9 +7,9 @@ export const registerUserAction = (user) => {
   };
 };
 
-export const loginUserAction = (user) => {
+export const loginUserAction = (credentials) => {
   return {
     type: types.LOGIN_USER,
-    user,
+    credentials,
   };
 };

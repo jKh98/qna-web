@@ -5,9 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Divider from "@material-ui/core/Divider";
-import Avatar from "@material-ui/core/Avatar";
 import { Grid } from "@material-ui/core";
+import { UserProfile } from "../users/userProfile";
 
 export function QuestionItem({
   id,
@@ -18,50 +17,51 @@ export function QuestionItem({
   category: { id: categoryId, name },
   shouldReferenceCategory = false,
 }) {
+  const renderSubheader = () => (
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="body2" color="textSecondary">
+          Posted
+          {shouldReferenceCategory && (
+            <span>
+              {" in "}
+              <Link to={`/categories/${categoryId}/questions`}>{name}</Link>
+            </span>
+          )}
+          {` ${moment(createdAt).fromNow()}`}
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+
   return (
     <>
-      <ListItem alignItems="flex-start">
+      <ListItem
+        alignItems="flex-start"
+        dense
+        button
+        divider
+        // onClick={handleToggle(value)}
+      >
         <ListItemAvatar>
-          <Avatar>
-            <img
-              src={`https://robohash.org/${username}`}
-              alt="profile pic"
-              width={60}
-              height={60}
-            />
-          </Avatar>
+          <UserProfile username={username} />
         </ListItemAvatar>
         <Grid container>
-          <ListItemText>
-            <Typography component="span" variant="body2" color="textSecondary">
-              Posted
-              {shouldReferenceCategory && (
-                <>
-                  {" in "}
-                  <Link to={`/categories/${categoryId}/questions`}>{name}</Link>
-                </>
-              )}
-              {` ${moment(createdAt).fromNow()}`}
-            </Typography>
-          </ListItemText>
+          {renderSubheader()}
           <ListItemText
-            primary={title}
+            primary={
+              <Typography variant="h6" color="textPrimary">
+                {title}
+              </Typography>
+            }
             secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  color="textPrimary"
-                >
-                  {body}
-                </Typography>
-              </React.Fragment>
+              <Typography variant="body2" color="textPrimary">
+                {body}
+              </Typography>
             }
           />
         </Grid>
       </ListItem>
-
-      <Divider variant="inset" component="li" />
     </>
   );
 }
