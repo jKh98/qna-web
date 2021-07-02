@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -14,7 +14,8 @@ import { Status } from "../status/status";
 
 export function LoginPage() {
   const styles = makeStyles();
-  const { pending, error, success } = useSelector((state) => state.login);
+  const login = useSelector((state) => state.login);
+  const { pending, error, success } = login;
   const dispatch = useDispatch();
 
   const onHandleLogin = (event) => {

@@ -5,6 +5,7 @@ const loginReducer = (state = {}, { type, response, error }) => {
     case types.LOGIN_USER_PENDING:
       return { ...state, pending: true };
 
+    case types.LOAD_USER:
     case types.LOGIN_USER_SUCCESS:
       return { ...state, ...response, error: "", pending: false };
 
@@ -20,7 +21,12 @@ const registerReducer = (state = {}, { type, response, error }) => {
     case types.REGISTER_USER_PENDING:
       return { ...state, pending: true };
     case types.REGISTER_USER_SUCCESS:
-      return { ...state, error: "", pending: false };
+      return {
+        ...state,
+        error: "",
+        success: "You have successfully registered.",
+        pending: false,
+      };
     case types.REGISTER_USER_ERROR:
       return { error: error.message, pending: false };
     default:

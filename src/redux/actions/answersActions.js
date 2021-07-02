@@ -5,3 +5,9 @@ export const getAnswersByQuestionAction = (questionId, query = "") => ({
   questionId,
   query,
 });
+
+export const addAnswerAction = (questionId, answer) => ({
+  type: types.ADD_ANSWER,
+  questionId,
+  answer,
+});

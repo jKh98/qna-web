@@ -13,3 +13,10 @@ export const loginUserAction = (credentials) => {
     credentials,
   };
 };
+
+export const loadUserAction = (response) => {
+  return {
+    type: types.LOAD_USER,
+    response,
+  };
+};

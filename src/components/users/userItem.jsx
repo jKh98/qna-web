@@ -23,7 +23,7 @@ const renderRole = (name) => {
 
 export function UserItem({ id, username, email, roles }) {
   return (
-    <Grid key={id} item xs={6} sm={4}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card variant="outlined">
         <CardHeader
           avatar={<UserProfile username={username} />}

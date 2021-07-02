@@ -10,23 +10,20 @@ import Divider from "@material-ui/core/Divider";
 
 import { UserProfile } from "../users";
 
-export function AnswerItem({
-  id,
-  text,
-  createdAt,
-  user: { username, id: userId },
-}) {
+export function AnswerItem({ id, text, createdAt, user }) {
   return (
     <>
       <ListItem alignItems="flex-start" dense>
         <ListItemAvatar>
-          <UserProfile username={username} />
+          <Link onClick={(e) => e.stopPropagation()} to={`/users/${user?.id}`}>
+            <UserProfile username={user?.username} />
+          </Link>
         </ListItemAvatar>
         <Grid container>
           <ListItemText
             primary={
               <Typography variant="body2" color="textSecondary">
-                <Link to={`/users/${userId}`}>{username}</Link>
+                <Link to={`/users/${user?.id}`}>{user?.username}</Link>
                 {` ${moment(createdAt).fromNow()}`}
               </Typography>
             }

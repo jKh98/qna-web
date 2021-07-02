@@ -8,7 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 
 export function CategoryItem({ id, name, image, description, actionsSection }) {
   return (
-    <Grid item xs={6} sm={4}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card variant="outlined">
         <CardMedia image={image} title={name} style={{ height: 160 }} />
         <CardContent>

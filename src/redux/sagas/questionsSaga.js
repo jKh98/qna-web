@@ -53,8 +53,8 @@ export function* addQuestionSaga({ categoryId, question }) {
   const { response, error } = yield call(
     addQuestionService,
     categoryId,
-    token,
-    question
+    question,
+    token
   );
 
   if (response) {

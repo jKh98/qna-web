@@ -22,12 +22,9 @@ export function QuestionSkeleton() {
 
 export function QuestionMainSkeleton() {
   return (
-    <Grid container>
+    <Grid container direction="column">
       <Skeleton width="60%" height="40%" />
-      <Skeleton width="80%" height="40%" />
-      <Skeleton width="80%" />
-      <Skeleton width="80%" />
-      <Skeleton width="80%" />
+      <Skeleton width="80%" height="100%" />
       <Skeleton width="40%" />
       <br />
     </Grid>

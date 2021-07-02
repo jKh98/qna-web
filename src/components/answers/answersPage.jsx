@@ -10,14 +10,19 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { getQuestionByIdAction } from "../../redux/actions/questionsActions";
 import { PageFilters } from "../filters";
 import { AnswerSkeleton } from "./answerSkeleton";
 import { AnswerItem } from "./answerItem";
-import { getAnswersByQuestionAction } from "../../redux/actions/answersActions";
+import {
+  addAnswerAction,
+  getAnswersByQuestionAction,
+} from "../../redux/actions/answersActions";
 import { QuestionMainSkeleton } from "../questions";
 import { Status } from "../status/status";
+import { QuestionMainItem } from "../questions";
 
 // pageable:
 // offset: 0
@@ -52,27 +57,15 @@ export function AnswersPage() {
     event.preventDefault();
 
     const data = {
-      text: event.target.title.text,
+      text: event.target.text.value,
     };
 
-    // dispatch(handleAddAnswer(selectedQuestion?.id, data));
+    dispatch(addAnswerAction(selectedQuestion?.id, data));
   };
 
   const renderQuestion = () => {
-    if (pending) return <QuestionMainSkeleton />;
-    return (
-      <Grid item xs={12} sm={12}>
-        <Typography variant="body2" color="textSecondary">
-          {selectedQuestion?.title}
-        </Typography>
-        <Box my={1} display="flex">
-          <Typography variant="h5">{selectedQuestion?.title}</Typography>
-        </Box>
-        <Box my={2} display="flex">
-          <Typography variant="body1">{selectedQuestion?.body}</Typography>
-        </Box>
-      </Grid>
-    );
+    if (pending || !selectedQuestion) return <QuestionMainSkeleton />;
+    return <QuestionMainItem {...selectedQuestion} />;
   };
 
   const renderAnswers = () => {
@@ -104,8 +97,13 @@ export function AnswersPage() {
                 fullWidth
               />
               <Box>
-                <Button type="submit" color="primary" variant="contained">
-                  Answer!
+                <Button
+                  disabled={pending}
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                >
+                  {pending ? <CircularProgress size={14} /> : "Answer!"}
                 </Button>
               </Box>
             </form>

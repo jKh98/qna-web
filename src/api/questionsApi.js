@@ -39,7 +39,7 @@ export const getQuestionsByCategoryService = async (categoryId, query) => {
     .catch((error) => ({ error }));
 };
 
-export const addQuestionService = async (categoryId, token, question) => {
+export const addQuestionService = async (categoryId, question, token) => {
   headers.append("Authorization", `Bearer ${token}`);
 
   let requestOptions = {

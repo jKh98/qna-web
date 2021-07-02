@@ -10,7 +10,7 @@ import {
   getQuestionsByCategorySaga,
   getQuestionsSaga,
 } from "./questionsSaga";
-import { getAnswersByQuestionSaga } from "./answersSaga";
+import { addAnswerSaga, getAnswersByQuestionSaga } from "./answersSaga";
 
 export function* watchUserAuthentication() {
   yield takeLatest(types.REGISTER_USER, registerSaga);
@@ -35,4 +35,5 @@ export function* watchQuestions() {
 
 export function* watchAnswers() {
   yield takeLatest(types.GET_ANSWERS_BY_QUESTION, getAnswersByQuestionSaga);
+  yield takeLatest(types.ADD_ANSWER, addAnswerSaga);
 }

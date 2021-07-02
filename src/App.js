@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,6 +12,7 @@ import { QuestionsPage } from "./components/questions";
 import { ProtectedRoute } from "./components/route";
 import { Menu } from "./components/menu";
 import { AnswersPage } from "./components/answers";
+import { loadUserAction } from "./redux/actions/authActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +32,16 @@ const useStyles = makeStyles((theme) => ({
 
 export function App() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.login);
+
+  useEffect(() => {
+    const candidateSession = localStorage.getItem("session");
+    if (!token && !!candidateSession) {
+      console.log(candidateSession);
+      dispatch(loadUserAction(JSON.parse(candidateSession)));
+    }
+  }, [token, dispatch]);
 
   return (
     <div className={classes.root}>
