@@ -11,11 +11,18 @@ import { PageFilters } from "../filters";
 import { CategoryItem } from "./categoryItem";
 import { CategorySkeleton } from "./categorySkeleton";
 import { Button } from "@material-ui/core";
+import { Status } from "../status/status";
 
 export function CategoriesPage() {
-  const { content, pageable, totalPages, pending } = useSelector(
-    (state) => state.categories
-  );
+  const {
+    content,
+    pageable,
+    totalPages,
+    numberOfElements,
+    pending,
+    error,
+    success,
+  } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const history = useHistory();
   const { search } = useLocation();
@@ -56,13 +63,18 @@ export function CategoriesPage() {
         <Grid container spacing={1}>
           {renderCategories()}
         </Grid>
-        <br />
-        <PageFilters
-          size={pageable?.pageSize || 5}
-          number={pageable?.pageNumber + 1}
-          total={totalPages}
-        />
+        <Box my={2} display="flex">
+          {!!numberOfElements && (
+            <PageFilters
+              size={pageable?.pageSize || 5}
+              number={pageable?.pageNumber + 1}
+              total={totalPages}
+            />
+          )}
+        </Box>
       </Grid>
+      <Status message={error} type={"error"} />
+      <Status message={success} type={"success"} />
     </Container>
   );
 }

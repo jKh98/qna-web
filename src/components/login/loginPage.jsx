@@ -7,15 +7,14 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 
 import makeStyles from "./styles";
 import { loginUserAction } from "../../redux/actions/authActions";
+import { Status } from "../status/status";
 
 export function LoginPage() {
   const styles = makeStyles();
-  const { pending, error } = useSelector((state) => state.login);
+  const { pending, error, success } = useSelector((state) => state.login);
   const dispatch = useDispatch();
 
   const onHandleLogin = (event) => {
@@ -77,14 +76,8 @@ export function LoginPage() {
           </Grid>
         </form>
       </div>
-      <Snackbar
-        open={!!error}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      </Snackbar>
+      <Status message={error} type={"error"} />
+      <Status message={success} type={"success"} />
     </Container>
   );
 }

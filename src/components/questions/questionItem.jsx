@@ -16,6 +16,7 @@ export function QuestionItem({
   user: { username },
   category: { id: categoryId, name },
   shouldReferenceCategory = false,
+  onSelectQuestion = null,
 }) {
   const renderSubheader = () => (
     <Grid container>
@@ -25,7 +26,12 @@ export function QuestionItem({
           {shouldReferenceCategory && (
             <span>
               {" in "}
-              <Link to={`/categories/${categoryId}/questions`}>{name}</Link>
+              <Link
+                onClick={(e) => e.stopPropagation()}
+                to={`/categories/${categoryId}/questions`}
+              >
+                {name}
+              </Link>
             </span>
           )}
           {` ${moment(createdAt).fromNow()}`}
@@ -39,15 +45,14 @@ export function QuestionItem({
       <ListItem
         alignItems="flex-start"
         dense
-        button
+        button={!!onSelectQuestion}
         divider
-        // onClick={handleToggle(value)}
+        onClick={onSelectQuestion}
       >
         <ListItemAvatar>
           <UserProfile username={username} />
         </ListItemAvatar>
         <Grid container>
-          {renderSubheader()}
           <ListItemText
             primary={
               <Typography variant="h6" color="textPrimary">
@@ -60,6 +65,7 @@ export function QuestionItem({
               </Typography>
             }
           />
+          {renderSubheader()}
         </Grid>
       </ListItem>
     </>

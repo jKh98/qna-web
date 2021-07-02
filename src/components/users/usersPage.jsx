@@ -10,11 +10,11 @@ import { getUsersAction } from "../../redux/actions/usersActions";
 import { PageFilters } from "../filters";
 import { UserSkeleton } from "./userSkeleton";
 import { UserItem } from "./userItem";
+import { Status } from "../status/status";
 
 export function UsersPage() {
-  const { content, pageable, totalPages, pending } = useSelector(
-    (state) => state.users
-  );
+  const { content, pageable, totalPages, pending, error, success } =
+    useSelector((state) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
   const { search } = useLocation();
@@ -55,6 +55,8 @@ export function UsersPage() {
           total={totalPages}
         />
       </Grid>
+      <Status message={error} type={"error"} />
+      <Status message={success} type={"success"} />
     </Container>
   );
 }

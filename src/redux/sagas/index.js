@@ -4,6 +4,7 @@ import {
   watchCategories,
   watchQuestions,
   watchUsers,
+  watchAnswers,
 } from "./watchers";
 
 export function* rootSaga() {
@@ -11,6 +12,7 @@ export function* rootSaga() {
     watchUserAuthentication(),
     watchCategories(),
     watchQuestions(),
+    watchAnswers(),
     watchUsers(),
   ]);
 }

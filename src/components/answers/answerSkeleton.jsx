@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Skeleton from "@material-ui/lab/Skeleton";
 
-export function QuestionSkeleton() {
+export function AnswerSkeleton() {
   return (
     <Grid item xs={12}>
       <Grid container>
@@ -16,20 +16,6 @@ export function QuestionSkeleton() {
           <br />
         </Grid>
       </Grid>
-    </Grid>
-  );
-}
-
-export function QuestionMainSkeleton() {
-  return (
-    <Grid container>
-      <Skeleton width="60%" height="40%" />
-      <Skeleton width="80%" height="40%" />
-      <Skeleton width="80%" />
-      <Skeleton width="80%" />
-      <Skeleton width="80%" />
-      <Skeleton width="40%" />
-      <br />
     </Grid>
   );
 }

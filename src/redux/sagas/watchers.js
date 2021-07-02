@@ -6,9 +6,11 @@ import { registerSaga, loginSaga } from "./authSaga";
 import { getCategoryByIdSaga, getCategoriesSaga } from "./categoriesSaga";
 import {
   addQuestionSaga,
+  getQuestionByIdSaga,
   getQuestionsByCategorySaga,
   getQuestionsSaga,
 } from "./questionsSaga";
+import { getAnswersByQuestionSaga } from "./answersSaga";
 
 export function* watchUserAuthentication() {
   yield takeLatest(types.REGISTER_USER, registerSaga);
@@ -27,5 +29,10 @@ export function* watchUsers() {
 export function* watchQuestions() {
   yield takeLatest(types.GET_QUESTIONS, getQuestionsSaga);
   yield takeLatest(types.GET_QUESTIONS_BY_CATEGORY, getQuestionsByCategorySaga);
+  yield takeLatest(types.GET_QUESTION_BY_ID, getQuestionByIdSaga);
   yield takeLatest(types.ADD_QUESTION, addQuestionSaga);
+}
+
+export function* watchAnswers() {
+  yield takeLatest(types.GET_ANSWERS_BY_QUESTION, getAnswersByQuestionSaga);
 }

@@ -58,3 +58,18 @@ export const addQuestionService = async (categoryId, token, question) => {
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 };
+
+export const getQuestionByIdService = async (questionId) => {
+  let requestOptions = {
+    method: "GET",
+    headers,
+    redirect: "follow",
+  };
+
+  let url = new URL(REACT_APP_BASE_URL.concat(`/questions/${questionId}`));
+
+  return fetch(url, requestOptions)
+    .then(async (response) => await handleFetchErrors(response))
+    .then((response) => ({ response }))
+    .catch((error) => ({ error }));
+};

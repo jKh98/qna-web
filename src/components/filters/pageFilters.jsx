@@ -12,7 +12,7 @@ export function PageFilters({ size, number, total }) {
 
   const handleSetQuery = useCallback(
     (query) => {
-      history.push(`${pathname}?${query}`);
+      history.replace(`${pathname}?${query}`);
     },
     [history, pathname]
   );

@@ -11,6 +11,7 @@ import { CategoriesPage } from "./components/categories";
 import { QuestionsPage } from "./components/questions";
 import { ProtectedRoute } from "./components/route";
 import { Menu } from "./components/menu";
+import { AnswersPage } from "./components/answers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +60,10 @@ export function App() {
               <Route
                 path="/categories/:categoryId/questions"
                 component={QuestionsPage}
+              />
+              <Route
+                path="/questions/:questionId/answers"
+                component={AnswersPage}
               />
               <Route exact path="/categories" component={CategoriesPage} />
               <Route exact path="/users" component={UsersPage} />

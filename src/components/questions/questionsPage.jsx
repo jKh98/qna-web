@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -7,8 +7,6 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 
 import {
   addQuestionAction,
@@ -22,6 +20,7 @@ import { getCategoryByIdAction } from "../../redux/actions/categoriesActions";
 import { CategoryItem } from "../categories/categoryItem";
 
 import { QuestionModal } from "./questionModal";
+import { Status } from "../status/status";
 
 // pageable:
 // offset: 0
@@ -37,6 +36,7 @@ export function QuestionsPage() {
     pageable,
     totalPages,
     selectedCategory,
+    numberOfElements,
     pending,
     error,
     success,
@@ -48,17 +48,6 @@ export function QuestionsPage() {
   const { search, pathname } = useLocation();
   const [isVisible, setVisible] = useState(false);
 
-  const handleSetQuery = useCallback(
-    (query) => {
-      if (params?.categoryId) {
-        history.push(`/categories/${params.categoryId}/questions?${query}`);
-      } else {
-        history.push(`/questions?${query}`);
-      }
-    },
-    [history, params]
-  );
-
   useEffect(() => {
     if (params.categoryId) {
       dispatch(getCategoryByIdAction(params.categoryId));
@@ -66,7 +55,7 @@ export function QuestionsPage() {
     } else {
       dispatch(getQuestionsAction(search));
     }
-  }, [dispatch, search, handleSetQuery, params.categoryId]);
+  }, [dispatch, search, params.categoryId]);
 
   const handleAddQuestion = (event) => {
     event.preventDefault();
@@ -90,6 +79,9 @@ export function QuestionsPage() {
       <QuestionItem
         key={i}
         {...question}
+        onSelectQuestion={() =>
+          history.push(`/questions/${question.id}/answers`)
+        }
         shouldReferenceCategory={!pathname.includes("categories")}
       />
     ));
@@ -111,21 +103,6 @@ export function QuestionsPage() {
       />
     );
 
-  const renderAlert = () => {
-    if (!!error)
-      return (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      );
-    else if (!!success)
-      return (
-        <Alert variant="filled" severity="success">
-          {success}
-        </Alert>
-      );
-  };
-
   return (
     <Container maxWidth="lg">
       <Grid container direction="column">
@@ -142,14 +119,16 @@ export function QuestionsPage() {
           </Grid>
           {renderCategoryComponent()}
         </Grid>
-        <br />
-        <PageFilters
-          size={pageable?.pageSize || 5}
-          number={pageable?.pageNumber + 1}
-          total={totalPages}
-        />
+        <Box my={2} display="flex">
+          {!!numberOfElements && (
+            <PageFilters
+              size={pageable?.pageSize || 5}
+              number={pageable?.pageNumber + 1}
+              total={totalPages}
+            />
+          )}
+        </Box>
       </Grid>
-
       {isVisible && (
         <QuestionModal
           isVisible={isVisible}
@@ -157,13 +136,8 @@ export function QuestionsPage() {
           handleAddQuestion={handleAddQuestion}
         />
       )}
-
-      <Snackbar
-        open={!!error}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        {renderAlert()}
-      </Snackbar>
+      <Status message={error} type={"error"} />
+      <Status message={success} type={"success"} />
     </Container>
   );
 }
