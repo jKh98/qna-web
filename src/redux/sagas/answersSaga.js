@@ -35,6 +35,8 @@ export function* addAnswerSaga({ questionId, answer }) {
     token
   );
 
+  console.log(response, error);
+
   if (response) {
     yield put({ type: types.ADD_ANSWER_SUCCESS, response });
   } else {

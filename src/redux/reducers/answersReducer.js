@@ -21,7 +21,7 @@ const answersReducer = (state = {}, { type, response, error }) => {
         pending: false,
       };
 
-    case types.ADD_QUESTION_SUCCESS:
+    case types.ADD_ANSWER_SUCCESS:
       return {
         ...state,
         success: "Your answer was submitted successfully",

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -23,6 +23,7 @@ import {
 import { QuestionMainSkeleton } from "../questions";
 import { Status } from "../status/status";
 import { QuestionMainItem } from "../questions";
+import { savePreAuthPathAction } from "../../redux/actions/authActions";
 
 // pageable:
 // offset: 0
@@ -43,8 +44,9 @@ export function AnswersPage() {
     error,
     success,
   } = useSelector((state) => state.answers);
-
+  const { token } = useSelector((state) => state.login);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { questionId } = useParams();
   const { search } = useLocation();
 
@@ -56,11 +58,18 @@ export function AnswersPage() {
   const handleAddAnswer = (event) => {
     event.preventDefault();
 
+    if (!token) {
+      dispatch(savePreAuthPathAction());
+      history.push("/login");
+      return;
+    }
+
     const data = {
       text: event.target.text.value,
     };
 
     dispatch(addAnswerAction(selectedQuestion?.id, data));
+    window.location.reload();
   };
 
   const renderQuestion = () => {
@@ -103,7 +112,13 @@ export function AnswersPage() {
                   color="primary"
                   variant="contained"
                 >
-                  {pending ? <CircularProgress size={14} /> : "Answer!"}
+                  {pending ? (
+                    <CircularProgress size={14} />
+                  ) : token ? (
+                    "Answer!"
+                  ) : (
+                    "Login to Answer"
+                  )}
                 </Button>
               </Box>
             </form>

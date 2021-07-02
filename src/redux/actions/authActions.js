@@ -14,9 +14,14 @@ export const loginUserAction = (credentials) => {
   };
 };
 
-export const loadUserAction = (response) => {
+export const savePreAuthPathAction = () => {
   return {
-    type: types.LOAD_USER,
-    response,
+    type: types.SAVE_PREAUTH_PATH,
+  };
+};
+
+export const logoutUserAction = () => {
+  return {
+    type: types.LOGOUT_USER,
   };
 };

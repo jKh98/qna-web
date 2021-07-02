@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,7 +12,6 @@ import { QuestionsPage } from "./components/questions";
 import { ProtectedRoute } from "./components/route";
 import { Menu } from "./components/menu";
 import { AnswersPage } from "./components/answers";
-import { loadUserAction } from "./redux/actions/authActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,16 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function App() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.login);
-
-  useEffect(() => {
-    const candidateSession = localStorage.getItem("session");
-    if (!token && !!candidateSession) {
-      console.log(candidateSession);
-      dispatch(loadUserAction(JSON.parse(candidateSession)));
-    }
-  }, [token, dispatch]);
+  const { token, preAuthPath = "/" } = useSelector((state) => state.login);
 
   return (
     <div className={classes.root}>
@@ -57,14 +47,14 @@ export function App() {
                 path="/login"
                 component={LoginPage}
                 condition={!token}
-                fallback={"/"}
+                fallback={preAuthPath}
               />
               <ProtectedRoute
                 exact
                 path="/register"
                 component={RegisterPage}
                 condition={!token}
-                fallback={"/"}
+                fallback={preAuthPath}
               />
               <Route exact path="/questions" component={QuestionsPage} />
               <Route

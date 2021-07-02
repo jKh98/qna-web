@@ -22,14 +22,6 @@ import { CategoryItem } from "../categories/categoryItem";
 import { QuestionModal } from "./questionModal";
 import { Status } from "../status/status";
 
-// pageable:
-// offset: 0
-// pageNumber: 0
-// pageSize: 4
-// paged: true
-// sort: {unsorted: false, sorted: true, empty: false}
-// unpaged: false
-
 export function QuestionsPage() {
   const {
     content,
@@ -67,6 +59,7 @@ export function QuestionsPage() {
 
     dispatch(addQuestionAction(selectedCategory?.id, data));
     setVisible(false);
+    window.location.reload();
   };
 
   const renderQuestions = () => {

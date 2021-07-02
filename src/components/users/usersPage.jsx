@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -13,22 +13,21 @@ import { UserItem } from "./userItem";
 import { Status } from "../status/status";
 
 export function UsersPage() {
-  const { content, pageable, totalPages, pending, error, success } =
-    useSelector((state) => state.users);
+  const {
+    content,
+    pageable,
+    totalPages,
+    pending,
+    numberOfElements,
+    error,
+    success,
+  } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  const history = useHistory();
   const { search } = useLocation();
-
-  const handleSetQuery = useCallback(
-    (query) => {
-      history.push(`/users?${query}`);
-    },
-    [history]
-  );
 
   useEffect(() => {
     dispatch(getUsersAction(search));
-  }, [dispatch, search, handleSetQuery]);
+  }, [dispatch, search]);
 
   const renderUsers = () => {
     if (pending)
@@ -49,11 +48,13 @@ export function UsersPage() {
           {renderUsers()}
         </Grid>
         <br />
-        <PageFilters
-          size={pageable?.pageSize || 5}
-          number={pageable?.pageNumber + 1}
-          total={totalPages}
-        />
+        {!!numberOfElements && (
+          <PageFilters
+            size={pageable?.pageSize || 5}
+            number={pageable?.pageNumber + 1}
+            total={totalPages}
+          />
+        )}
       </Grid>
       <Status message={error} type={"error"} />
       <Status message={success} type={"success"} />

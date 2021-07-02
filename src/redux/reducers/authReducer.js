@@ -5,12 +5,18 @@ const loginReducer = (state = {}, { type, response, error }) => {
     case types.LOGIN_USER_PENDING:
       return { ...state, pending: true };
 
-    case types.LOAD_USER:
     case types.LOGIN_USER_SUCCESS:
       return { ...state, ...response, error: "", pending: false };
 
     case types.LOGIN_USER_ERROR:
       return { error: error.message, pending: false };
+
+    case types.SAVE_PREAUTH_PATH:
+      return { ...state, preAuthPath: window.location.pathname };
+
+    case types.LOGOUT_USER:
+      return {};
+
     default:
       return state;
   }

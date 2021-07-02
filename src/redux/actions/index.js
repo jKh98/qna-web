@@ -7,7 +7,8 @@ export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_USER_PENDING = "LOGIN_USER_PENDING";
 export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
-export const LOAD_USER = "LOAD_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
+export const SAVE_PREAUTH_PATH = "SAVE_PREAUTH_PATH";
 
 /** Categories Actions */
 export const CATEGORIES_PENDING = "CATEGORIES_PENDING";
